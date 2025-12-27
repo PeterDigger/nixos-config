@@ -1,0 +1,40 @@
+{ pkgs, ... }:
+
+{
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "smartctl-status" ''
+      #!/usr/bin/env bash
+      logfile="/var/log/smartctl_tests.log"
+
+      echo "=== SMART Long Test Summary ==="
+
+      if [[ ! -f "$logfile" ]]; then
+        echo "No SMART test log found at $logfile"
+        exit 0
+      fi
+
+      now=$(date +%s)
+      one_month=$((30*24*3600))
+      stale_found=false
+
+      # dedupe: take last entry per device
+      latest_log=$(tac "$logfile" | /run/current-system/sw/bin/awk '!seen[$1]++' | tac)
+
+      echo "$latest_log" | sort -k1,1 | while read -r dev date time; do
+        [[ -z "$dev" ]] && continue
+        ts=$(date -d "$date $time" +%s 2>/dev/null || echo 0)
+        diff=$(( (now - ts) / 86400 ))
+        printf "%-8s last test: %s %s (%d days ago)\n" \
+          "$dev" "$date" "$time" "$diff"
+
+        (( now - ts > one_month )) && stale_found=true
+      done
+
+      if $stale_found; then
+        echo ""
+        echo "⚠️  Some drives haven't had a long test in over 30 days."
+        echo "Run: smartctl -t long /dev/sdX"
+      fi
+    '')
+  ];
+}
