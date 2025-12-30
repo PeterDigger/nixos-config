@@ -13,11 +13,10 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
-
     nixosConfigurations.delicate = inputs.nixpkgs.lib.nixosSystem {
       modules = [
         { nix.settings.experimental-features = ["nix-command" "flakes"]; }
-        ./configuration.nix
+        ./hosts/delicate/configuration.nix
         inputs.home-manager.nixosModules.default
         ./modules/docker/00-docker.nix
         ./modules/docker/01-homer.nix
@@ -25,6 +24,13 @@
         ./modules/docker/03-media.nix
         ./modules/docker/04-storage.nix
         ./modules/docker/05-tools.nix
+      ];
+    };
+    nixosConfigurations.brittle = inputs.nixpkgs.lib.nixosSystem {
+      modules = [
+        { nix.settings.experimental-features = ["nix-command" "flakes"]; }
+        ./hosts/brittle/configuration.nix
+        inputs.home-manager.nixosModules.default
       ];
     };
   };
