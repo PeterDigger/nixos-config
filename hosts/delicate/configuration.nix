@@ -7,6 +7,7 @@
       ./modules/tools/01-temp.nix
       ./modules/tools/02-smartctl.nix
       ./modules/tools/03-smartctl-status.nix
+      ./modules/tools/04-rebuild.nix
     ];
   
   environment.shellAliases = {

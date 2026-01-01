@@ -3,7 +3,7 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # Home manager
     home-manager = {
@@ -31,6 +31,13 @@
         { nix.settings.experimental-features = ["nix-command" "flakes"]; }
         ./hosts/brittle/configuration.nix
         inputs.home-manager.nixosModules.default
+        ./modules/docker/00-docker.nix
+        ./modules/docker/01-homer.nix
+        ./modules/tools/00-dockerpull.nix
+        ./modules/tools/01-temp.nix
+        ./modules/tools/02-smartctl.nix
+        ./modules/tools/03-smartctl-status.nix
+        ./modules/tools/04-rebuild.nix
       ];
     };
   };
