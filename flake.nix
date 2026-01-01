@@ -24,6 +24,11 @@
         ./modules/docker/03-media.nix
         ./modules/docker/04-storage.nix
         ./modules/docker/05-tools.nix
+        ./modules/tools/00-dockerpull.nix
+        ./modules/tools/01-temp.nix
+        ./modules/tools/02-smartctl.nix
+        ./modules/tools/03-smartctl-status.nix
+        ./modules/tools/04-rebuild.nix
       ];
     };
     nixosConfigurations.brittle = inputs.nixpkgs.lib.nixosSystem {

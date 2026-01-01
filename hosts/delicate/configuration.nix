@@ -3,11 +3,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./modules/tools/00-dockerpull.nix
-      ./modules/tools/01-temp.nix
-      ./modules/tools/02-smartctl.nix
-      ./modules/tools/03-smartctl-status.nix
-      ./modules/tools/04-rebuild.nix
     ];
   
   environment.shellAliases = {
@@ -189,6 +184,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }
