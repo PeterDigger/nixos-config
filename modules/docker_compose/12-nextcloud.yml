@@ -1,0 +1,42 @@
+services:
+  db:
+    container_name: 12-nextcloud-db
+    image: mariadb:lts
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED
+    env_file: env/12-nextcloud.env
+    volumes:
+      - /docker/12-nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=herng453845
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  redis:
+    container_name: 12-nextcloud-redis
+    image: redis:alpine
+    restart: always
+
+  app:
+    container_name: 12-nextcloud-app
+    image: nextcloud
+    restart: always
+    ports:
+      - 8020:80
+    depends_on:
+      - redis
+      - db
+    volumes:
+      - /docker/12-nextcloud/html:/var/www/html
+      - /mnt/storage/nextcloud/:/var/www/html/data
+    env_file: env/12-nextcloud.env
+    environment:
+      - MYSQL_PASSWORD=MYSQL_PASSWORD
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+
+volumes:
+  nextcloud:
+  db:

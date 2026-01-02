@@ -1,0 +1,51 @@
+---
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: 08-jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuching
+      - JELLYFIN_PublishedServerUrl=192.168.1.124 #optional
+    volumes:
+      - /docker/08-jellyfin/config:/config
+      - /mnt/storage/musics:/data/musics
+      - /mnt/storage/movies:/data/movies
+      - /mnt/storage/tv:/data/tv
+    devices:
+      # VAAPI Devices (examples)
+      #- /dev/dri/renderD128:/dev/dri/renderD128
+      #- /dev/dri/card0:/dev/dri/card0
+      - /dev/dri:/dev/dri
+    ports:
+      - 8016:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    restart: unless-stopped
+
+
+# Settings for IGPU
+# 
+# Video Acceleration API (VAAPI)
+#
+# /dev/dri/renderD128
+# 
+# Source: https://forum.jellyfin.org/t-what-transcoding-settings-should-i-use#data-28910
+#
+# Tick only ""
+# Enable hardware decoding for
+#       "H264"
+#       ~HEVC~
+#       "MPEG2"
+#       "VC1"
+#       ~VP8~
+#       ~VP9~
+#       ~AV1~
+#       ~HEVC 10bit~
+#       ~VP9 10bit~
+# Hardware encoding options
+#       "Enable hardware encoding"
+#       ~Enable Intel Low-Power H.264 hardware encoder~
+#       ~Enable Intel Low-Power HEVC hardware encoder~

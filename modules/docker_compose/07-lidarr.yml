@@ -1,0 +1,17 @@
+---
+services:
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: 07-lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuching
+    volumes:
+      - /docker/07-lidarr/config:/config
+      - /mnt/storage/downloads/deluge:/downloads #optional
+      - /mnt/storage/musics:/musics
+    ports:
+      - 8015:8686
+    restart: unless-stopped
+

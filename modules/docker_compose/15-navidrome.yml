@@ -1,0 +1,18 @@
+---
+services:
+  navidrome:
+    container_name: 15-navidrome
+    image: deluan/navidrome:latest
+    #user: 1000:1000 # should be owner of volumes
+    ports:
+      - 8023:4533
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuching
+      # Optional: put your config options customization here. Examples:
+      # ND_LOGLEVEL: debug
+    volumes:
+      - /docker/15-navidrome/data/:/data
+      - /mnt/storage/musics/:/music:ro

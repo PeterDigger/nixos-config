@@ -1,0 +1,16 @@
+---
+services:
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: 06-sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kuching
+    volumes:
+      - /docker/06-sonarr/config:/config
+      - /mnt/storage/downloads/deluge:/downloads #optional
+      - /mnt/storage/tv:/tv
+    ports:
+      - 8014:8989
+    restart: unless-stopped
