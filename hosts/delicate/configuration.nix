@@ -9,6 +9,20 @@
     readme = "nvim /etc/nixos/README.md";
   };
 
+  # for fan control
+  hardware.fancontrol.enable = true;
+  hardware.fancontrol.config = ''
+  INTERVAL=10
+  DEVPATH=hwmon1=devices/platform/coretemp.0/hwmon/hwmon1 hwmon2=devices/platform/nct6775.656/hwmon/hwmon2
+  DEVNAME=hwmon1=coretemp hwmon2=nct6798
+  FCTEMPS=hwmon2/device/pwm1=hwmon1/temp1_input
+  FCFANS=hwmon2/device/pwm1=hwmon2/device/fan1_input
+  MINTEMP=hwmon2/device/pwm1=35
+  MAXTEMP=hwmon2/device/pwm1=65
+  MINSTART=hwmon2/device/pwm1=150
+  MINSTOP=hwmon2/device/pwm1=0
+'';
+  
   # for beep
    boot.kernelModules = [ "pcspkr" ];
 

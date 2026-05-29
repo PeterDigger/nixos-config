@@ -6,6 +6,7 @@ let
     "/docker/00-docker_compose/10-immich.yml"
     "/docker/00-docker_compose/12-nextcloud.yml"
     "/docker/00-docker_compose/14-syncthing.yml"
+    "/docker/00-docker_compose/17-filebrowser.yml"
   ];
   composeFlags = lib.concatStringsSep " \\\n  -f " (map toString composeFiles);
 in {

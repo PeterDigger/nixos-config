@@ -1,7 +1,13 @@
 { config, lib, pkgs, ... }:
 
-
-{
+let
+  dockerComposeBin = "/run/current-system/sw/bin/docker compose";
+  composeFiles = [
+    "/docker/00-docker_compose/01-homer.yml"
+    "/docker/00-docker_compose/16-glance.yml"
+  ];
+  composeFlags = lib.concatStringsSep " \\\n  -f " (map toString composeFiles);
+in {
   config = {
     systemd.services.delicate-homer = {
       description = "Docker Compose for Homer";
@@ -10,21 +16,31 @@
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
-	Type = "exec";
+        Type = "exec";
 
-	# Pull the latest image before running
-	#ExecStartPre = "/run/current-system/sw/bin/docker compose -f /docker/00-docker_compose/01-homer.yml pull";
+        #ExecStartPre = ''
+        #  ${dockerComposeBin} \
+        #    -f ${composeFlags} \
+        #    pull
+        #'';
 
-	# Bring the service up
-	ExecStart = "/run/current-system/sw/bin/docker compose -f /docker/00-docker_compose/01-homer.yml up";
+        ExecStart = ''
+          ${dockerComposeBin} \
+            -f ${composeFlags} \
+            up
+        '';
 
-	# Take it down gracefully
-	ExecStop = "/run/current-system/sw/bin/docker compose -f /docker/00-docker_compose/01-homer.yml down";
+        ExecStop = ''
+          ${dockerComposeBin} \
+            -f ${composeFlags} \
+            down
+        '';
 
-	WorkingDirectory = "/docker/00-docker_compose";
-	Restart = "on-failure";
-	RestartSec = 5;
+        WorkingDirectory = "/docker/00-docker_compose";
+        Restart = "on-failure";
+        RestartSec = 5;
       };
     };
   };
 }
+

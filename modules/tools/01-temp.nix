@@ -36,16 +36,20 @@
 
   for dev in sda sdb sdd sde sdc; do
     disk="/dev/''${dev}"
+
     model=$(lsblk -ndo MODEL "''$disk")
     mount=$(lsblk -ndo MOUNTPOINT "''${disk}1")
     temp=$(hddtemp -n "''$disk" 2>/dev/null || echo "?")
+    
     fstype=$(lsblk -ndo FSTYPE "''${disk}"* | grep -m1 .)
     if [ -n "''$mount" ]; then
       used=$(df -h "''$mount" | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')
     else
       used="N/A"
+      mount="N/A"
     fi
-    printf "%-5s | %-25s | %-5s | %-6s | %s\n" "''$dev" "''$model" "''$temp °C" "''$fstype" "$used"
+    #printf "%-5s | %-25s | %-5s | %-6s | %s\n" 
+    printf "%-5s | %-25s | %-5s | %-6s | %-20s | %s\n" "''$dev" "''$model" "''$temp °C" "''$fstype" "$used" "$mount"
   done
     '')
   ];

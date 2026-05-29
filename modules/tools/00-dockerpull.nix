@@ -10,13 +10,14 @@
         if [[ -e "$compose_file" ]]; then
           ((total_count++))
           output=$(docker compose -f "$compose_file" pull 2>&1)
-          if echo "$output" | grep -qi "Downloaded newer image"; then
+          #if echo "$output" | grep -qi "Downloaded newer image"; then
+          if echo "$output" | grep -qi "Pull complete"; then
             ((updated_count++))
           fi
         fi
       done
 
-      /run/current-system/sw/bin/wall "===== Docker Pull Latest Image =====
+      wall "===== Docker Pull Latest Image =====
       
       Summary: $updated_count out of $total_count stacks had updates.
       
