@@ -6,6 +6,7 @@ What can you do with this system?
 3. You can perform the snapraid check to make all the parity data snapshots are up-to-update 
 4. You can perform the Lazydocker to check the health of all the services.
 5. You can check temps of all the crucial hardware components
+6. You can delete unused docker images to save disk space.
 
 ### Directory:
     /docker/00-docker_compose - stores all the docker compose files
@@ -42,6 +43,7 @@ What can you do with this system?
     snapsync = "sudo snapraid sync";
     snapscrub = "sudo snapraid scrub -p 10 -o 10";
     snapstatus = "sudo snapraid status";
+    dockerimgclean = "docker system prune -a"
 
 ### Timer
     10 mins after boot runs dockerpull

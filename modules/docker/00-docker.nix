@@ -3,6 +3,9 @@
 {
  virtualisation.docker.enable = true;
 
+  environment.shellAliases = {
+    dockerimgclean = "docker system prune -a";
+  };
  # For more isolation, you can use systemd cgroups and enable layers if needed
 
   ############################
